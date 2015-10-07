@@ -9,19 +9,23 @@
 #include <stddef.h>
 
 int main(int argc, char **argv) {
-  int n=10;
+  int n;
   clock_t c0, c1, c2,c3;
   seed=(unsigned) time(NULL);
   double max;
   int blocksize, new_size;
-  printf("Geef grootte matrix: ");
-  scanf("%d",&n);
   dense_matrix matA, matB, matprod, matprod_blas, matprod_blocked;
-  printf("Geef maximum getal in matrix: ");
-  scanf("%lf",&max);
-  printf("gelezen: %g \n",max);
-  printf("Geef grootte van blokken in matrix: ");
-  scanf("%d",&blocksize);
+  if (argc < 4){
+    printf("Invalid number of input parameters. \n");
+    printf("Correct use: ./matrix_mult <matrix size> <block size> <max value> \n");
+    return;
+  }
+  n=atoi(*++argv);
+  printf("Matrix size: %d \n ",n);
+  blocksize=atoi(*++argv);
+  printf("Block size: %d \n",blocksize);
+  max=atof(*++argv);
+  printf("Maximum value: %g \n ",max);
   if (n%blocksize==0)
     new_size=n;
   else
@@ -49,9 +53,9 @@ int main(int argc, char **argv) {
   printf ("\t elapsed CPU time blocked:       %f\n", (float) (c3 - c2)/CLOCKS_PER_SEC);
   printf ("\t elapsed CPU time blas:          %f\n", (float) (c2 - c1)/CLOCKS_PER_SEC);
   
-  printdense(n,matprod_blocked,"matprod_blocked");
-  printdense(n,matprod,"matprod");
-  printdense(n,matprod_blas,"matprod_blas");
+  //  printdense(n,matprod_blocked,"matprod_blocked");
+  //printdense(n,matprod,"matprod");
+  //printdense(n,matprod_blas,"matprod_blas");
   return 0;
 }
 
